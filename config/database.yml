@@ -22,6 +22,5 @@ test:
 
 production:
   adapter: postgresql
+  encoding: unicode
   database: rsd_minesweeper_production
-  pool: 5
-  timeout: 5000
