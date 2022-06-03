@@ -1,0 +1,23 @@
+<div class="container mx-auto">
+    <div class="flex flex-col items-center">
+        <div style="width: 360px;" class="game-board flex flex-wrap">
+            <% 0.upto(@game_board.length-1) do |i| %>
+                <% 0.upto(@game_board.length-1) do |j| %>
+                    <div class="w-10 h-10 border">
+                        <a href='<%= "/#{i}/#{j}"  %>'>
+                            <% if !@game_board[i][j][:is_open] %>
+                                <%= image_tag("/assets/icons/closed.svg") %>
+                            <% else %>
+                                <% if @game_board[i][j][:content] == '' %>
+                                    <%= image_tag("/assets/icons/open.svg") %>
+                                <% elsif @game_board[i][j][:content] == 'flag' %>
+                                    <%= image_tag("/assets/icons/flag.svg") %>
+                                <% end %>
+                            <% end %>
+                        </a>
+                    </div>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>
