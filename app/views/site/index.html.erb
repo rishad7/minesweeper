@@ -12,6 +12,11 @@
                                     <%= image_tag("/assets/icons/open.svg") %>
                                 <% elsif @game_board[i][j][:content] == 'flag' %>
                                     <%= image_tag("/assets/icons/flag.svg") %>
+                                <% elsif @game_board[i][j][:content] == 'number' %>
+                                    <div class="relative h-full w-full flex items-center justify-center">
+                                        <p class="z-10 font-black text-2xl text-color-<%= @game_board[i][j][:value] %>"><%= @game_board[i][j][:value] %></p>
+                                        <%= image_tag("/assets/icons/open.svg", class: "absolute") %>
+                                    </div>
                                 <% end %>
                             <% end %>
                         </a>

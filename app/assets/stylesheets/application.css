@@ -13,3 +13,28 @@
  *= require_tree .
  *= require_self
  */
+
+.text-color-1 {
+  color: blue;
+}
+.text-color-2 {
+  color: green;
+}
+.text-color-3 {
+  color: red;
+}
+.text-color-4 {
+  color: yellow;
+}
+.text-color-5 {
+  color: orange;
+}
+.text-color-6 {
+  color: violet;
+}
+.text-color-7 {
+  color: orchid;
+}
+.text-color-8 {
+  color: brown;
+}
