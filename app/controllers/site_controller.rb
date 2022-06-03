@@ -30,7 +30,7 @@ class SiteController < ApplicationController
         k = k + 1
       end
     end
-    session[:game_board] = game_board;
+    session[:game_board] = game_board
   end
 
   def set_mine_on_game_board
