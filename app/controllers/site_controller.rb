@@ -2,7 +2,8 @@ class SiteController < ApplicationController
 
   $row_count = 9
   $column_count = 9
-  $mine_cordinates = [[0,3], [0,4], [1,8], [2,7], [2,8], [5,0], [6,0], [7,2], [8,5], [8,7]]
+  $mine_count = 10
+  $mine_cordinates = []
 
   def index
     if params[:row_id] && params[:column_id]
@@ -36,6 +37,7 @@ class SiteController < ApplicationController
 
   def set_mine_on_game_board
     @game_board = session[:game_board]
+    set_mine_coordinates(1)
     $mine_cordinates.each do |mc|
       i = mc[0]
       j = mc[1]
@@ -43,6 +45,22 @@ class SiteController < ApplicationController
       set_count(i,j)
     end
     session[:game_board] = @game_board;
+  end
+
+  def set_mine_coordinates(i)
+
+    if i > $mine_count
+      return
+    end
+    
+    single_mine = [*0..$row_count - 1].sample(2)
+    if $mine_cordinates.include?(single_mine)
+      set_mine_coordinates(i)
+    else
+      $mine_cordinates.push(single_mine)
+      set_mine_coordinates(i + 1)
+    end
+
   end
 
   def set_count(i, j)
