@@ -1,40 +1,64 @@
-<p id="notice"><%= notice %></p>
+<div class="container mx-auto pb-8">
 
-<p>
-  <strong>Name:</strong>
-  <%= @result.name %>
-</p>
-
-<p>
-  <strong>Clicks:</strong>
-  <%= @result.clicks %>
-</p>
-
-<p>
-  <strong>Time:</strong>
-  <%= @result.time_taken %>
-</p>
+  <p id="notice" class="text-center mt-8"><%= notice %></p>
 
 
-<table class="table-auto">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Clicks</th>
-      <th>time</th>
-      <th>High Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @results.each_with_index do |r, index| %>
-        <tr>
-            <td><%= index + 1 %></td>
-            <td><%= r.name %></td>
-            <td><%= r.clicks %></td>
-            <td><%= r.time_taken %></td>
-            <td><%= r.high_score %></td>
-        </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="mt-8 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+      <div class="flex flex-col items-center pb-10">
+          <%= image_tag("avatar.png", class: "mb-3 w-24 h-24 rounded-full object-contain shadow-lg", alt: "avatar") %>
+          <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"><%= @result.name %></h5>
+          <div class="flex mt-4 space-x-3 lg:mt-6">
+              <div class="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Clicks: <%= @result.clicks %></div>
+              <div class="inline-flex items-center py-2 px-4 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Time: <%= @result.time_taken %></div>
+          </div>
+      </div>
+  </div>
+
+  <h1 class="mt-8 text-2xl font-bold">Score Table</h1>
+
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      #
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Name
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Clicks
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Time(in seconds)
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      High Score
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+            <% @results.each_with_index do |r, index| %>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                      <%= index + 1 %>
+                  </th>
+                  <td class="px-6 py-4">
+                      <%= r.name %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.clicks %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.time_taken %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.high_score %>
+                  </td>
+              </tr>
+            <% end %>
+          </tbody>
+      </table>
+  </div>
+
+</div>

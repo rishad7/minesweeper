@@ -3,7 +3,7 @@ class ResultsController < ApplicationController
   before_action :set_result, only: %i[ show ]
 
   def show
-    @results = Result.all.order("clicks ASC, time_taken ASC")
+    @results = Result.all.order("high_score DESC")
   end
 
   def create

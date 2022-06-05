@@ -12,26 +12,36 @@ class SiteController < ApplicationController
   $is_first_click = true
 
   def index
+    
+    # Accepting row_id and column_id as get parameters
     if params[:row_id] && params[:column_id]
       if $game_status == 'start'
         row_id = params[:row_id].to_i
         column_id = params[:column_id].to_i
 
+        # Checking the parameters are valid or not. which should be included in our game board
         if row_id.between?(0, $row_count - 1) && column_id.between?(0, $column_count - 1)
 
-          # storing the time of first click
+          # Storing the time of first click
           if $is_first_click
             $start_time = Time.now.to_i
             $is_first_click = false
           end
 
-          # counting clicks
+          # Counting each clicks
           $click = $click + 1
 
-          # calculating time
+          # Calculating time in each click
           $timer = Time.now.to_i - $start_time
 
-          update_game_board(row_id, column_id)
+          # Updating the game board only if the previous click and currrent click are not same
+          if session[:previous_row_id] != row_id || session[:previous_column_id] != column_id
+
+            session[:previous_row_id] = row_id
+            session[:previous_column_id] = column_id
+
+            update_game_board(row_id, column_id)
+          end
         else
           # show error msg
         end
@@ -41,18 +51,21 @@ class SiteController < ApplicationController
       reset_session
       set_game_board
       set_mine_on_game_board
+      set_previous_row_column_id
       p $mine_cordinates
     end
     @game_board = session[:game_board]
 
     if $game_status == 'won'
-      @high_score = $click * $timer / 100
+      ideal_click = $timer / 10
+      @high_score = $click / ideal_click * 100
       @result = Result.new
     end
   end
 
   private
 
+  # Setting global variables when it comes to home page
   def set_global_variables
     $row_count = 9
     $column_count = 9
@@ -66,6 +79,7 @@ class SiteController < ApplicationController
     $is_first_click = true
   end
 
+  # Creating game board with $row_count rows and $column_count columns and assigning an object to each position
   def set_game_board
     game_board = Array.new($row_count){Array.new($column_count)}
     k = 1
@@ -81,9 +95,12 @@ class SiteController < ApplicationController
         k = k + 1
       end
     end
+
+    # Storing the game board to session
     session[:game_board] = game_board
   end
 
+  # Adding $mine_count number of flags to random positions 
   def set_mine_on_game_board
     @game_board = session[:game_board]
     set_mine_coordinates(1)
@@ -96,6 +113,7 @@ class SiteController < ApplicationController
     session[:game_board] = @game_board;
   end
 
+  # Finding $mine_count number of cordinates with a recursive function
   def set_mine_coordinates(i)
 
     if i > $mine_count
@@ -112,6 +130,7 @@ class SiteController < ApplicationController
 
   end
 
+  # Assigning hint numbers adjascent to flags. it will be max 8 positions
   def set_count(i, j)
     
     a = i - 1
@@ -156,11 +175,18 @@ class SiteController < ApplicationController
     
   end
 
+  # Adding 1 to the corresponding position as hint number
   def set_increment_value(x, y)
     if @game_board[x][y][:content] != 'flag'
       @game_board[x][y][:content] = "number"
       @game_board[x][y][:value] = @game_board[x][y][:value] + 1
     end
+  end
+
+  # Assign previous row id and column id as blank
+  def set_previous_row_column_id
+    session[:previous_row_id] = ""
+    session[:previous_column_id] = ""
   end
 
   def update_game_board(row_id, column_id)
