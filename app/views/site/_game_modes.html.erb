@@ -1,0 +1,30 @@
+<div class="flex justify-start items-center flex-wrap">
+    <a href="/mode/beginner" class="mr-4 <%= $game_mode == 'beginner'  ? 'font-black' : 'text-cyan-600' %>">Beginner</a>
+    <a href="/mode/intermediate" class="mr-4 <%= $game_mode == 'intermediate'  ? 'font-black' : 'text-cyan-600' %>">Intermediate</a>
+    <a href="/mode/expert" class="mr-4 <%= $game_mode == 'expert'  ? 'font-black' : 'text-cyan-600' %>">Expert</a>
+    <a href="/mode/custom" class="mr-4 <%= $game_mode == 'custom'  ? 'font-black' : 'text-cyan-600' %>">Custom</a>
+</div>
+
+<% if $game_mode == 'custom' %>
+<div class="mt-4 code-preview rounded-xl bg-gradient-to-r bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-2 sm:p-6 dark:bg-gray-800">
+    <%= form_with url: "/custom", method: :get do |form| %>
+        <div class="flex justify-start items-center">
+            <div class="mb-6 mr-4">
+                <%= form.label :width, "Width", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+                <%= form.text_field :width, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "9", :required => true %>
+            </div>
+            <div class="mb-6 mr-4">
+                <%= form.label :height, "Height", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+                <%= form.text_field :height, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "9", :required => true %>
+            </div>
+            <div class="mb-6 mr-4">
+                <%= form.label :mines, "Mines", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+                <%= form.text_field :mines, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "40", :required => true %>
+            </div>
+            <div class="mb-1">
+                <%= form.submit "Update", class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" %>
+            </div>
+        </div>
+    <% end %>
+</div>
+<% end %>

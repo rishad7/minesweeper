@@ -1,15 +1,17 @@
-class SiteController < ApplicationController
+$row_count = 9
+$column_count = 9
+$mine_count = 10
+$mine_cordinates = []
+$closed_boxes = $row_count * $column_count
+$game_status = "start"
+$timer = 0
+$click = 0
+$start_time = Time.now.to_i
+$is_first_click = true
+$game_mode = "beginner"
+$width = "360px"
 
-  $row_count = 9
-  $column_count = 9
-  $mine_count = 10
-  $mine_cordinates = []
-  $closed_boxes = $row_count * $column_count
-  $game_status = "start"
-  $timer = 0
-  $click = 0
-  $start_time = Time.now.to_i
-  $is_first_click = true
+class SiteController < ApplicationController
 
   def index
     
@@ -52,7 +54,6 @@ class SiteController < ApplicationController
       set_game_board
       set_mine_on_game_board
       set_previous_row_column_id
-      p $mine_cordinates
     end
     @game_board = session[:game_board]
 
@@ -63,13 +64,57 @@ class SiteController < ApplicationController
     end
   end
 
+  def mode
+    if params[:type]
+      $game_mode = params[:type]
+      if $game_mode == 'custom'
+        session[:custom_row_count] = 9
+        session[:custom_column_count] = 9
+        session[:custom_mine_count] = 40
+        session[:custom_width] = "360px"
+      end
+    end
+    redirect_to root_url
+  end
+
+  def custom
+    if params[:height] != '' && params[:width] != '' && params[:mines] != ''
+      session[:custom_row_count] = params[:height].to_i
+      session[:custom_column_count] = params[:width].to_i
+      session[:custom_mine_count] = params[:mines].to_i
+      custom_width = params[:width].to_i * 40
+      session[:custom_width] = "#{custom_width}px"
+    end
+    redirect_to root_url
+  end
+
   private
 
   # Setting global variables when it comes to home page
   def set_global_variables
-    $row_count = 9
-    $column_count = 9
-    $mine_count = 10
+
+    if $game_mode == "beginner"
+      $row_count = 9
+      $column_count = 9
+      $mine_count = 10
+      $width = "360px"
+    elsif $game_mode == "intermediate"
+      $row_count = 16
+      $column_count = 16
+      $mine_count = 40
+      $width = "640px"
+    elsif $game_mode == "expert"
+      $row_count = 16
+      $column_count = 30
+      $mine_count = 99
+      $width = "1200px"
+    elsif $game_mode == "custom"
+      $row_count = session[:custom_row_count] ? session[:custom_row_count] : 9
+      $column_count = session[:custom_column_count] ? session[:custom_column_count] : 9
+      $mine_count = session[:custom_mine_count] ? session[:custom_mine_count] : 40
+      $width = session[:custom_width] ? session[:custom_width] : "360px"
+    end
+    
     $mine_cordinates = []
     $closed_boxes = $row_count * $column_count
     $game_status = "start"
