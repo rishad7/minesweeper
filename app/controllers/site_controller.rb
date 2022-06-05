@@ -244,19 +244,20 @@ class SiteController < ApplicationController
     session[:previous_column_id] = ""
   end
 
+  # Updating game board when a box clicked
   def update_game_board(row_id, column_id)
     @game_board = session[:game_board]
     @game_board[row_id][column_id][:is_open] = true
     $closed_boxes = $closed_boxes - 1
 
-
+    # Checking the clicked box contain flag
     if @game_board[row_id][column_id][:content] == "flag"
       
-      # count no of closed boxes 
+      # If closed boxes are more than mines all flags will be replaced with bomb 
       if $closed_boxes > $mine_count - 1
         @game_board[row_id][column_id][:content] = "bomb_exploded"
 
-        # removing clicked flag box from mine cordinates
+        # Removing clicked flag box from mine cordinates
         bomb_cordinates = $mine_cordinates - [[row_id, column_id]]
         replace_flag_with_bomb(bomb_cordinates)
 
@@ -268,12 +269,12 @@ class SiteController < ApplicationController
 
     elsif @game_board[row_id][column_id][:content] == ""
       
-      # open closed boxes
+      # If clicked box is empty, it will open all other blank boxes upto number hints
       open_blank_closed_boxes(row_id, column_id)
       
-
     else
       
+      # If hint number opened, it will check remaining closed boxes. And if it is equal to mines, then you won the game
       if $closed_boxes == $mine_count
         open_all_mines
         $game_status = "won"
@@ -284,10 +285,12 @@ class SiteController < ApplicationController
     session[:game_board] = @game_board
   end
 
+  # changing is_open to true from false
   def open_blank_closed_boxes(i, j)
   
     adjascent_boxes = get_adjascent_boxes(i, j)
 
+    # Iterating adjascent boxes and find next blank box upto hint number
     adjascent_boxes.each do |ab|
       x = ab[0]
       y = ab[1]
@@ -296,10 +299,9 @@ class SiteController < ApplicationController
         $closed_boxes = $closed_boxes - 1
 
         if @game_board[x][y][:content] == ''
-          # take adjascent
+          # Recursive function to reach upto hint number
           open_blank_closed_boxes(x, y)
         end
-
         
       end
     end
@@ -308,6 +310,7 @@ class SiteController < ApplicationController
 
   end
 
+  # Fetching all adjascent boxes near to [i,j] cordinates. It will be maximum of 8 cordinates.
   def get_adjascent_boxes(i, j)
 
     closed_boxes = []
@@ -356,6 +359,7 @@ class SiteController < ApplicationController
 
   end
 
+  # If lose the game, all flags will be replaced with bomb
   def replace_flag_with_bomb(bomb_cordinates)
     bomb_cordinates.each do |mc|
       i = mc[0]
@@ -365,6 +369,7 @@ class SiteController < ApplicationController
     end
   end
 
+  # Open all boxes which contains flag
   def open_all_mines
     $mine_cordinates.each do |mc|
       i = mc[0]
