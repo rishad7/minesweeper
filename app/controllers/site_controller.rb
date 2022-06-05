@@ -5,6 +5,7 @@ class SiteController < ApplicationController
   $mine_count = 10
   $mine_cordinates = []
   $closed_boxes = $row_count * $column_count
+  $game_status = "start"
 
   def index
     if params[:row_id] && params[:column_id]
@@ -127,9 +128,9 @@ class SiteController < ApplicationController
       
       # count no of closed boxes 
       if $closed_boxes > $mine_count - 1
-        abort('loser')
+        $game_status = "lose"
       else
-        abort('win')
+        $game_status = "won"
       end
 
     elsif @game_board[row_id][column_id][:content] == ""
@@ -141,7 +142,7 @@ class SiteController < ApplicationController
     else
       
       if $closed_boxes == $mine_count
-        abort('win')
+        $game_status = "won"
       end
 
     end
