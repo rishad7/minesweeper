@@ -9,17 +9,35 @@ class SiteController < ApplicationController
 
   def index
     if params[:row_id] && params[:column_id]
-      update_game_board(params[:row_id].to_i, params[:column_id].to_i)
+      if $game_status == 'start'
+        row_id = params[:row_id].to_i
+        column_id = params[:column_id].to_i
+
+        if row_id.between?(0, $row_count - 1) && column_id.between?(0, $column_count - 1)
+          update_game_board(row_id, column_id)
+        else
+          # show error msg
+        end
+      end
     else
+      set_global_variables
       reset_session
       set_game_board
       set_mine_on_game_board
-      p $mine_cordinates
     end
     @game_board = session[:game_board]
   end
 
   private
+
+  def set_global_variables
+    $row_count = 9
+    $column_count = 9
+    $mine_count = 10
+    $mine_cordinates = []
+    $closed_boxes = $row_count * $column_count
+    $game_status = "start"
+  end
 
   def set_game_board
     game_board = Array.new($row_count){Array.new($column_count)}
@@ -128,8 +146,15 @@ class SiteController < ApplicationController
       
       # count no of closed boxes 
       if $closed_boxes > $mine_count - 1
+        @game_board[row_id][column_id][:content] = "bomb_exploded"
+
+        # removing clicked flag box from mine cordinates
+        bomb_cordinates = $mine_cordinates - [[row_id, column_id]]
+        replace_flag_with_bomb(bomb_cordinates)
+
         $game_status = "lose"
       else
+        open_all_mines
         $game_status = "won"
       end
 
@@ -142,6 +167,7 @@ class SiteController < ApplicationController
     else
       
       if $closed_boxes == $mine_count
+        open_all_mines
         $game_status = "won"
       end
 
@@ -220,7 +246,23 @@ class SiteController < ApplicationController
 
     return closed_boxes
 
+  end
 
+  def replace_flag_with_bomb(bomb_cordinates)
+    bomb_cordinates.each do |mc|
+      i = mc[0]
+      j = mc[1]
+      @game_board[i][j][:is_open] = true
+      @game_board[i][j][:content] = "bomb"
+    end
+  end
+
+  def open_all_mines
+    $mine_cordinates.each do |mc|
+      i = mc[0]
+      j = mc[1]
+      @game_board[i][j][:is_open] = true
+    end
   end
 
 end
