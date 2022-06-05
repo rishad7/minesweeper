@@ -69,4 +69,12 @@
             </div>
         </div>
     </div>
+    <% if $game_status == 'lose' %>
+        <div class="flex flex-col items-center">
+            <div style="padding: 20px;margin-top: 20px;" class="border flex flex-col">
+                <div>Time: <span class="font-bold"><%= $timer %></span> sec</div>
+                <div>Clicks: <%= $click %></div>
+            </div>
+        </div>
+    <% end %>
 </div>
