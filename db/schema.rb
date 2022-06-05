@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_03_072222) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_05_045205) do
+  create_table "results", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.integer "clicks", default: 0, null: false
+    t.integer "time_taken", default: 0, null: false
+    t.json "game_board"
+    t.float "high_score", default: 0.0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"

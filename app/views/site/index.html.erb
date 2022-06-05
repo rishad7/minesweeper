@@ -77,4 +77,39 @@
             </div>
         </div>
     <% end %>
+    <% if $game_status == 'won' %>
+        
+        
+
+        <%= form_with(model: @result) do |form| %>
+            <% if @result.errors.any? %>
+                <div id="error_explanation">
+                <h2><%= pluralize(@result.errors.count, "error") %> prohibited this result from being saved:</h2>
+
+                <ul>
+                    <% @result.errors.each do |error| %>
+                    <li><%= error.full_message %></li>
+                    <% end %>
+                </ul>
+                </div>
+            <% end %>
+
+            <div class="field">
+                <%= form.label :name %>
+                <%= form.text_field :name %>
+            </div>
+
+            <%= form.hidden_field :clicks, value: $click %>
+            <%= form.hidden_field :time_taken, value: $timer %>
+            <%= form.hidden_field :game_board, value: "" %>
+            <%= form.hidden_field :high_score, value: @high_score  %>
+
+            <div class="actions">
+                <%= form.submit "Submit" %>
+            </div>
+        <% end %>
+
+
+
+    <% end %>
 </div>

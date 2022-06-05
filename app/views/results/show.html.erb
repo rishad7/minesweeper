@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @result.name %>
+</p>
+
+<p>
+  <strong>Clicks:</strong>
+  <%= @result.clicks %>
+</p>
+
+<p>
+  <strong>Time:</strong>
+  <%= @result.time_taken %>
+</p>
+
+
+<table class="table-auto">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Clicks</th>
+      <th>time</th>
+      <th>High Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each_with_index do |r, index| %>
+        <tr>
+            <td><%= index + 1 %></td>
+            <td><%= r.name %></td>
+            <td><%= r.clicks %></td>
+            <td><%= r.time_taken %></td>
+            <td><%= r.high_score %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -44,6 +44,11 @@ class SiteController < ApplicationController
       p $mine_cordinates
     end
     @game_board = session[:game_board]
+
+    if $game_status == 'won'
+      @high_score = $click * $timer / 100
+      @result = Result.new
+    end
   end
 
   private
@@ -175,7 +180,6 @@ class SiteController < ApplicationController
         replace_flag_with_bomb(bomb_cordinates)
 
         $game_status = "lose"
-        p $click
       else
         open_all_mines
         $game_status = "won"
@@ -281,7 +285,6 @@ class SiteController < ApplicationController
   end
 
   def open_all_mines
-    p $click
     $mine_cordinates.each do |mc|
       i = mc[0]
       j = mc[1]
