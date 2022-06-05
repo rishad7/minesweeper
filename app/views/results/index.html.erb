@@ -1,0 +1,60 @@
+<div class="container mx-auto pb-8">
+
+  <h1 class="mt-8 text-2xl font-bold">All Results</h1>
+
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      #
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Name
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Clicks
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      Time(in seconds)
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                      High Score
+                  </th>
+                  <!--
+                  <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">View</span>
+                   </th>
+                   -->
+              </tr>
+          </thead>
+          <tbody>
+            <% @results.each_with_index do |r, index| %>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                      <%= index + 1 %>
+                  </th>
+                  <td class="px-6 py-4">
+                      <%= r.name %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.clicks %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.time_taken %>
+                  </td>
+                  <td class="px-6 py-4">
+                      <%= r.high_score %>
+                  </td>
+                  <!--
+                  <td class="px-6 py-4 text-right">
+                    <a href="/results/view_game_board/<%= r.id %>" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Game Board</a>
+                  </td>
+                  -->
+              </tr>
+            <% end %>
+          </tbody>
+      </table>
+  </div>
+
+</div>

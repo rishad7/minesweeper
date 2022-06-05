@@ -10,7 +10,7 @@
 
     <%= form.hidden_field :clicks, value: $click %>
     <%= form.hidden_field :time_taken, value: $timer %>
-    <%= form.hidden_field :game_board, value: "" %>
+    <%= form.hidden_field :game_board, value: @game_board.to_json %>
     <%= form.hidden_field :high_score, value: @high_score  %>
 
     <%= form.submit "Submit", class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" %>

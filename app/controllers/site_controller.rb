@@ -79,11 +79,21 @@ class SiteController < ApplicationController
 
   def custom
     if params[:height] != '' && params[:width] != '' && params[:mines] != ''
-      session[:custom_row_count] = params[:height].to_i
-      session[:custom_column_count] = params[:width].to_i
-      session[:custom_mine_count] = params[:mines].to_i
-      custom_width = params[:width].to_i * 40
-      session[:custom_width] = "#{custom_width}px"
+
+      row_count = params[:height].to_i
+      column_count = params[:width].to_i
+      mines = params[:mines].to_i
+
+      min_mine_count = (row_count * column_count) / ((row_count + column_count) / 2)
+      max_mine_count = (row_count * column_count) / 2
+
+      if mines >= min_mine_count && mines <= max_mine_count
+        session[:custom_row_count] = row_count
+        session[:custom_column_count] = column_count
+        session[:custom_mine_count] = mines
+        custom_width = mines * 40
+        session[:custom_width] = "#{custom_width}px"
+      end
     end
     redirect_to root_url
   end

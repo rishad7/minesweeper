@@ -1,9 +1,13 @@
 class ResultsController < ApplicationController
 
-  before_action :set_result, only: %i[ show ]
+  before_action :set_result, only: %i[ show view_game_board ]
+
+  def index
+    @results = Result.all.order("high_score DESC")
+  end
 
   def show
-    @results = Result.all.order("high_score DESC")
+    @results = Result.all.order("high_score DESC").limit(10)
   end
 
   def create
@@ -12,11 +16,19 @@ class ResultsController < ApplicationController
     respond_to do |format|
       if @result.save
         format.html { redirect_to result_url(@result), notice: "Your result successfully saved." }
-        format.json { render :show, status: :created, location: @result }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @result.errors, status: :unprocessable_entity }
+        format.html { redirect_to root_url }
       end
+    end
+  end
+
+  def view_game_board
+    if @result.game_board != ''
+      @game_board = JSON.parse(@result.game_board)
+      width = @game_board.length * 40
+      @width = "#{width}px"
+    else
+      redirect_to root_url
     end
   end
 
