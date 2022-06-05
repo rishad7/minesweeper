@@ -58,8 +58,8 @@ class SiteController < ApplicationController
     @game_board = session[:game_board]
 
     if $game_status == 'won'
-      ideal_click = $timer / 10
-      @high_score = $click / ideal_click * 100
+      ideal_click = $timer.to_f / 10.to_f
+      @high_score = ($click.to_f / ideal_click * 100).round(2)
       @result = Result.new
     end
   end
