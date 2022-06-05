@@ -6,6 +6,10 @@ class SiteController < ApplicationController
   $mine_cordinates = []
   $closed_boxes = $row_count * $column_count
   $game_status = "start"
+  $timer = 0
+  $click = 0
+  $start_time = Time.now.to_i
+  $is_first_click = true
 
   def index
     if params[:row_id] && params[:column_id]
@@ -14,6 +18,19 @@ class SiteController < ApplicationController
         column_id = params[:column_id].to_i
 
         if row_id.between?(0, $row_count - 1) && column_id.between?(0, $column_count - 1)
+
+          # storing the time of first click
+          if $is_first_click
+            $start_time = Time.now.to_i
+            $is_first_click = false
+          end
+
+          # counting clicks
+          $click = $click + 1
+
+          # calculating time
+          $timer = Time.now.to_i - $start_time
+
           update_game_board(row_id, column_id)
         else
           # show error msg
@@ -24,6 +41,7 @@ class SiteController < ApplicationController
       reset_session
       set_game_board
       set_mine_on_game_board
+      p $mine_cordinates
     end
     @game_board = session[:game_board]
   end
@@ -37,6 +55,10 @@ class SiteController < ApplicationController
     $mine_cordinates = []
     $closed_boxes = $row_count * $column_count
     $game_status = "start"
+    $timer = 0
+    $click = 0
+    $start_time = Time.now.to_i
+    $is_first_click = true
   end
 
   def set_game_board
@@ -153,6 +175,7 @@ class SiteController < ApplicationController
         replace_flag_with_bomb(bomb_cordinates)
 
         $game_status = "lose"
+        p $click
       else
         open_all_mines
         $game_status = "won"
@@ -258,6 +281,7 @@ class SiteController < ApplicationController
   end
 
   def open_all_mines
+    p $click
     $mine_cordinates.each do |mc|
       i = mc[0]
       j = mc[1]
